@@ -100,7 +100,7 @@ class PharmacyPrescription extends Component {
                         <div className="control">
                           <input
                             id="quantity"
-                            type="text"
+                            type="number"
                             className="input"
                             value={drug.quantity}
                             disabled
@@ -121,6 +121,7 @@ class PharmacyPrescription extends Component {
                         <div className="control">
                           <input
                             id="recurrence"
+                            type="number"
                             className="input"
                             value={drug.recurrence}
                             disabled

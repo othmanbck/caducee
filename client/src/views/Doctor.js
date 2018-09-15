@@ -108,7 +108,7 @@ class DoctorPrescription extends Component {
                         <div className="control">
                           <input
                             id="quantity"
-                            type="text"
+                            type="number"
                             className="input"
                             onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
                             value={item.quantity}
@@ -130,6 +130,7 @@ class DoctorPrescription extends Component {
                           <input
                             id="recurrence"
                             className="input"
+                            type="number"
                             onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
                             value={item.recurrence}
                           />
