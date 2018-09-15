@@ -93,50 +93,32 @@ class DoctorPrescription extends Component {
       <Fragment>
         <div className="box is-prescription columns is-multiline">
           {this.props.items.map((item, i) => (
-            <div className="column is-one-third" key={item.drug.value}>
+            <div className="column is-half is-4" key={item.drug.value}>
               <div className="box">
                 <h3 className="title is-6">{item.drug.label}</h3>
                 <form>
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="quantity">
-                        Quantity per use:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            id="quantity"
-                            type="number"
-                            className="input"
-                            onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
-                            value={item.quantity}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="field">
+                    Patient should take
+                      <input
+                        id="quantity"
+                        type="text"
+                        className="input is-inline-number"
+                        onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
+                        value={item.quantity}
+                      />
+                    each dose
                   </div>
                   <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="recurrence">
-                        Use per day:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            id="recurrence"
-                            className="input"
-                            type="number"
-                            onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
-                            value={item.recurrence}
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="field">
+                    Patient takes a dose
+                      <input
+                        id="recurrence"
+                        className="input is-inline-number"
+                        type="text"
+                        onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
+                        value={item.recurrence}
+                      />
+                    times a day
                   </div>
                   <br />
                   <div className="field is-horizontal">

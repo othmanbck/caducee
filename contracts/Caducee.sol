@@ -2,9 +2,16 @@ pragma solidity ^0.4.24;
 
 contract Caducee {
 
+  // A Doctor writes a prescription for his patient
   event WritePrescription(
     address indexed patient,
     string prescriptionHash
+  );
+
+  // A Pharmacist can write a followup, with info about what was brought
+  event WriteFollowup(
+    address indexed patient,
+    string followupHash
   );
 
   address public owner;
@@ -40,5 +47,9 @@ contract Caducee {
 
   function writePrescription(address patient, string prescriptionHash) public isDoctor() {
     emit WritePrescription(patient, prescriptionHash);
+  }
+
+  function writeFollowup(address patient, string followupHash) public isPharmacy() {
+    emit WriteFollowup(patient, followupHash);
   }
 }
