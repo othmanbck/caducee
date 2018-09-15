@@ -15,6 +15,7 @@ class App extends Component {
       web3: null,
       accounts: null,
       contract: null,
+      node: null,
       accountsChecker: null,
       statusLoaded: false,
       isDoctor: false,
@@ -25,6 +26,11 @@ class App extends Component {
   }
 
   async componentDidMount() {
+
+    const IPFS = require('ipfs');
+    const node = new IPFS();
+    node.on('ready', () => {this.setState({ node });});
+
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -74,6 +80,9 @@ class App extends Component {
   render() {
     if (!this.state.web3) {
       return <div>Loading Blockchain...</div>;
+    }
+    if (!this.state.node) {
+      return <div>Loading IPFS...</div>;
     }
     if (!this.state.statusLoaded) {
       return <div>Loading your status...</div>;
