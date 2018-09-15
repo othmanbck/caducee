@@ -4,7 +4,7 @@ export default props => (
   <nav className="navbar" aria-label="main navigation">
     <div className="navbar-brand">
       <h1 className="title is-1 has-text-primary">
-        <span aria-label="asclepius" role="img">⚕️</span> asclepius
+        <span aria-label="caducée" role="img">⚕️</span> caducée
       </h1>
     </div>
     <div className="navbar-end">

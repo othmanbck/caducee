@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-contract Asclepius {
+contract Caducee {
 
   event WritePrescription(
     address indexed patient,
