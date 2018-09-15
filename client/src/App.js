@@ -84,8 +84,7 @@ class App extends Component {
         <div className="section">
           <div className="container">
             <StatusChooser
-              isDoctor={this.state.isDoctor}
-              isPharmacy={this.state.isPharmacy}
+              {...this.state}
             />
           </div>
         </div>
@@ -95,9 +94,9 @@ class App extends Component {
 }
 
 const StatusChooser = props => {
-  if (props.isDoctor) return <Doctor/>;
-  if (props.isPharmacy) return <Pharmacy/>;
-  return <Patient/>;
+  if (props.isDoctor) return <Doctor {...props}/>;
+  if (props.isPharmacy) return <Pharmacy {...props}/>;
+  return <Patient {...props}/>;
 }
 
 export default App;

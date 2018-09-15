@@ -1,10 +1,15 @@
 pragma solidity ^0.4.24;
 
 contract NameTBD {
+
+  event WritePrescription(
+    address indexed patient,
+    bytes32 prescriptionHash
+  );
+
   address public owner;
   mapping(address => bool) public doctors;
   mapping(address => bool) public pharmacies;
-  uint storedData;
 
   modifier isOwner() { require(msg.sender == owner); _; }
   modifier isDoctor() { require(doctors[msg.sender]); _; }
@@ -33,11 +38,7 @@ contract NameTBD {
     pharmacies[pharmacy] = false;
   }
 
-  function set(uint x) public isDoctor() {
-    storedData = x;
-  }
-
-  function get() public view returns (uint) {
-    return storedData;
+  function writePrescription(address patient, bytes32 prescriptionHash) public isDoctor() {
+    emit WritePrescription(patient, prescriptionHash);
   }
 }
