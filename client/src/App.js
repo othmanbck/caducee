@@ -3,6 +3,8 @@ import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
 
+import DrugSearch from "./components/DrugSearch";
+
 import "./App.css";
 
 class App extends Component {
@@ -37,7 +39,7 @@ class App extends Component {
     const { accounts, contract } = this.state;
 
     // Stores a given value, 5 by default.
-    await contract.set(5, { from: accounts[0] });
+    //await contract.set(5, { from: accounts[0] });
 
     // Get the value from the contract to prove it worked.
     const response = await contract.get();
@@ -63,6 +65,7 @@ class App extends Component {
           Try changing the value stored on <strong>line 37</strong> of App.js.
         </p>
         <div>The stored value is: {this.state.storageValue}</div>
+        <DrugSearch />
       </div>
     );
   }
