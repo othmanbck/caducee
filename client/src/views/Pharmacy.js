@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import moment from 'moment';
 
 class Pharmacy extends Component {
   constructor(props) {
@@ -6,7 +7,8 @@ class Pharmacy extends Component {
     this.state = { patient: "", prescriptions: [], filtered_prescriptions: [] };
 
     this.handleChange = this.handleChange.bind(this);
-    this.filterPrescriptions = this.filterPrescriptions.bind(this);
+    this.filterPrescriptionsByDate = this.filterPrescriptionsByDate.bind(this);
+    this.filterPrescriptionsByPatient = this.filterPrescriptionsByPatient.bind(this);
   }
 
   async componentDidMount() {
@@ -26,20 +28,37 @@ class Pharmacy extends Component {
     this.setState({ patient: e.target.value });
   }
 
-  filterPrescriptions(e) {
+  filterPrescriptionsByDate() {
+    const now = moment();
+    console.log(now);
+    this.setState(prevState => ({
+      filtered_prescriptions: prevState.filtered_prescriptions
+        .map(
+          prescription => ({
+            ...prescription,
+            prescription: prescription.prescription.filter(p =>
+              moment(p.endDate).isAfter(now)
+            )
+          })
+        )
+        .filter(prescription => prescription.prescription.length)
+    }));
+  }
+
+  filterPrescriptionsByPatient(e) {
     e.preventDefault();
     if (!this.state.patient.length) {
       return;
     }
 
     const patient_id = this.state.patient;
-    this.setState(prevState => ({ filtered_prescriptions: prevState.prescriptions.filter((prescription) => prescription.patient.toLowerCase() === patient_id.toLowerCase()) }));
+    this.setState(prevState => ({ filtered_prescriptions: prevState.prescriptions.filter((prescription) => prescription.patient.toLowerCase() === patient_id.toLowerCase()) }), this.filterPrescriptionsByDate);
   }
 
   render() {
     return(
       <Fragment>
-      <form onSubmit={this.filterPrescriptions}>
+      <form onSubmit={this.filterPrescriptionsByPatient}>
         <div className="field is-horizontal">
           <div className="field-label is-normal">
             <label className="label" htmlFor="eth_addr">

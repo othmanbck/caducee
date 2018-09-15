@@ -8,7 +8,7 @@ class DrugSearch extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { items: [], text: '', timer: null };
+    this.state = { items: [], text: '', timer: null, value: null };
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
   }
@@ -24,6 +24,7 @@ class DrugSearch extends Component {
 
   handleSelect(e) {
     this.props.onDrugSelect(e);
+    this.setState({ value: null });
   }
 
   async requestDrug() {
@@ -43,6 +44,7 @@ class DrugSearch extends Component {
       <Select
         searchable={true}
         autoload={false}
+        value={this.state.value}
         onInputChange={this.handleChange}
         onChange={this.handleSelect}
         loadOptions={this.requestDrug}
