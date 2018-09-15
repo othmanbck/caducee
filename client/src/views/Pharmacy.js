@@ -31,7 +31,6 @@ class Pharmacy extends Component {
 
   filterPrescriptionsByDate() {
     const now = moment();
-    console.log(now);
     this.setState(prevState => ({
       filtered_prescriptions: prevState.filtered_prescriptions
         .map(
@@ -86,7 +85,7 @@ class Pharmacy extends Component {
       </form>
 
       <br />
-      <PharmacyPrescription node={this.props.node} contract={this.props.contract} accounts={this.props.accounts} filtered_prescriptions={this.state.filtered_prescriptions} />
+      <PharmacyPrescription node={this.props.node} contract={this.props.contract} accounts={this.props.accounts} req={this.props.req} filtered_prescriptions={this.state.filtered_prescriptions} />
       </Fragment>
     )
   }
@@ -232,6 +231,7 @@ class PharmacyPrescription extends Component {
             <div className="column is-one-third">
               <div className="box">
               <p className="title is-5">More Info</p>
+              <PrescriptionInfo req={this.props.req} drug={drug}/>
               </div>
             </div>
             </div>
@@ -316,6 +316,24 @@ class PrescriptionStatus extends Component {
           </button>
         </div>
       </Fragment>
+    )
+  }
+}
+
+class PrescriptionInfo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { info: '' };
+  }
+
+  async componentDidMount() {
+    const info = (await this.props.req('/drugs/' + this.props.drug.drug.value + '/info/patient?type=pure-html')).data;
+    this.setState({ info });
+  }
+
+  render() {
+    return (
+      <div className="is-drug-info" dangerouslySetInnerHTML={{__html: this.state.info}}/>
     )
   }
 }
