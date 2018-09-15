@@ -40,15 +40,21 @@ class Patient extends Component {
   render() {
     return (
       <div>
-        <div className="box-title">My Address</div>
-        <div className="pale-rect slim-rect">
+        <div className="title has-text-success is-4">My Address</div>
+        <div className="box">
           <h3 className="title is-5">{this.props.accounts[0]}</h3>
         </div>
         <br/>
-        <div className="box-title">My Prescriptions</div>
+        <div className="title has-text-success is-4">My Prescriptions</div>
         {this.state.prescriptions.map(prescription => (
-          <div key={prescription.id} className="pale-rect">
-            <div className="dark-rect slim-rect">From Doctor {console.log(prescription)}</div>
+          <div key={prescription.id} className="box">
+            <div className="message is-primary is-standalone">
+              <div className="message-header">
+                <div className="title is-5">
+                  From Doctor {'0xf17f52151ebef6c7334fad080c5704d77216b732'}
+                </div>
+              </div>
+            </div>
             <div className="columns is-multiline">
               {prescription.prescription.map(prescription => (
                 <Fragment key={JSON.stringify(prescription)}>

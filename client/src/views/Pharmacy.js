@@ -58,39 +58,30 @@ class Pharmacy extends Component {
   render() {
     return(
       <Fragment>
-      <div className="box-title">New Prescription Received</div>
-
-      <div className="pale-rect slim-rect">
-        <form onSubmit={this.filterPrescriptionsByPatient}>
-          <div className="field is-horizontal">
-
-            <div className="field-label">
-              <label className="label" htmlFor="eth_addr">
-                <h3 className="title is-5">Patient address</h3>
-              </label>
-            </div>
-
-            <div className="field is-grouped">
-              <p className="control is-expanded">
-                <input
-                  id="eth_addr"
-                  type="text"
-                  className="input"
-                  onChange={this.handleChange}
-                  value={this.state.patient}
-                />
-              </p>
-              <p className="control">
-                <button type="submit" className="button is-info">Submit</button>
-              </p>
-            </div>
-
+      <div className="title has-text-success is-4">New Prescription Received</div>
+      <div className="box">
+        <div className="columns">
+          <div className="column is-10">
+            <input
+              className="input"
+              value={this.state.patient}
+              onChange={this.handleChange}
+              placeholder="Patient's address"
+            />
           </div>
-        </form>
+          <div className="column is-2">
+            <button
+              className="button is-primary is-fullwidth"
+              onClick={this.filterPrescriptionsByPatient}
+            >
+              Find
+            </button>
+          </div>
+        </div>
       </div>
 
       <br />
-      <div className="box-title">Pending Prescriptions</div>
+      <div className="title has-text-success is-4">Pending Prescriptions</div>
       <PharmacyPrescription node={this.props.node} contract={this.props.contract} accounts={this.props.accounts} req={this.props.req} filtered_prescriptions={this.state.filtered_prescriptions} />
       </Fragment>
     )
@@ -99,59 +90,17 @@ class Pharmacy extends Component {
 }
 
 class PharmacyPrescription extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { doctor: '0xf17f52151ebef6c7334fad080c5704d77216b732'};
+  }
   render() {
-    return (
-      <Fragment>
-      {this.props.filtered_prescriptions.map((prescription, idx) => (
-        <div className="box">
-        <Fragment key={idx}>
-
-        <div className="message-header">
-          <form>
-            <div className="field is-horizontal">
-
-              <div className="field-label">
-                <label className="label" htmlFor="eth_addr">
-                  <h3 className="title is-5">Doctor address</h3>
-                </label>
-              </div>
-
-              <div className="field is-grouped">
-                  <input
-                    id="eth_addr"
-                    type="text"
-                    className="input"
-                    value={prescription.patient}
-                    disabled
-                  />
-              </div>
-
-            </div>
-          </form>
-        </div>
-
-        <div className="dark-rect slim-rect">
-          <form>
-            <div className="field is-horizontal">
-
-              <div className="field-label">
-                <label className="label" htmlFor="eth_addr">
-                  <h3 className="title is-5">Doctor address</h3>
-                </label>
-              </div>
-
-              <div className="field is-grouped">
-                  <input
-                    id="eth_addr"
-                    type="text"
-                    className="input"
-                    value={prescription.patient}
-                    disabled
-                  />
-              </div>
-
-            </div>
-          </form>
+    return this.props.filtered_prescriptions.map((prescription, idx) => (
+      <div className="box">
+        <div className="message is-primary is-standalone">
+          <div className="message-header">
+            <h3 className="title is-5">From Doctor {this.state.doctor}</h3>
+          </div>
         </div>
 
         {prescription.prescription.map(drug =>
@@ -172,7 +121,7 @@ class PharmacyPrescription extends Component {
                         type="text"
                         className="input is-inline-number"
                         value={drug.quantity}
-                        readOnly
+                        disabled
                       />
                     each dose
                   </div>
@@ -184,72 +133,52 @@ class PharmacyPrescription extends Component {
                         className="input is-inline-number"
                         type="text"
                         value={drug.recurrence}
-                        readOnly
+                        disabled
                       />
                     times a day
                   </div>
                   <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="posology">
-                        Posology:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <textarea
-                            id="posology"
-                            className="textarea"
-                            value={drug.posology}
-                            readOnly
-                          ></textarea>
-                        </div>
-                      </div>
+                  <div className="field">
+                    <label className="label">
+                      Posology:
+                    </label>
+                    <div className="control">
+                      <textarea
+                        id="posology"
+                        className="textarea"
+                        value={drug.posology}
+                        disabled
+                      ></textarea>
                     </div>
                   </div>
                   <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="start-date">
-                        Start date:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            type="date"
-                            id="start-date"
-                            className="input"
-                            value={drug.startDate}
-                            readOnly
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="end-date">
-                        End date:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            type="date"
-                            id="end-date"
-                            className="input"
-                            value={drug.endDate}
-                            readOnly
-                          />
-                        </div>
-                      </div>
+                  <div className="field">
+                    <label className="label">
+                      Start date:
+                    </label>
+                    <div className="control">
+                      <input
+                        type="date"
+                        className="input"
+                        value={drug.startDate}
+                        disabled
+                      />
                     </div>
                   </div>
-                </div>
+                  <br />
+                  <div className="field">
+                    <label className="label">
+                      End date:
+                    </label>
+                    <div className="control">
+                      <input
+                        type="date"
+                        className="input"
+                        value={drug.endDate}
+                        disabled
+                      />
+                    </div>
+                  </div>
                 </form>
               </div>
             </article>
@@ -286,11 +215,8 @@ class PharmacyPrescription extends Component {
             </Fragment>
           )}
 
-        </Fragment>
-        </div>
-        ))}
-      </Fragment>
-    )
+      </div>
+    ))
   }
 }
 

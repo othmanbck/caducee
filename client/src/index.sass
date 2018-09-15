@@ -14,7 +14,8 @@ $header-mauve: #A6A6BB
 
 $axa-blue: #00008f
 $axa-red: #ff1721
-$primary: $axa-blue
+$primary: rgba(46,112,126,0.3)
+$primary-invert: #2E707E
 $cotton: #fad6de
 $cotton-invert: #000
 $igloo: #b5d0ee
@@ -25,7 +26,7 @@ $danger: $cotton
 $danger-invert: $cotton-invert
 
 $dark: $header-mauve
-$success: $header-green
+$success: $title-green
 $warning: $header-pink
 $message-background-color: #FFFFFF
 
@@ -41,12 +42,18 @@ $message-background-color: #FFFFFF
 
 html
   height: 100%
+  margin: 0
+  background: linear-gradient(225.3deg, #DFEAF7 0%, #83A6D3 100%) no-repeat center center fixed
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
 
 body
   height: 100%
-  margin: 0
-  background-repeat: no-repeat
-  background: linear-gradient(225.3deg, #DFEAF7 0%, #83A6D3 100%)
+
+.is-standalone
+  border-radius: 4px !important
 
 .box-title
   font-size: 20px
@@ -77,7 +84,7 @@ body
 
 .message-title
   color: #000000
-  font-size: 12px
+  font-size: 18px
   font-weight: bold
   letter-spacing: -0.16px
   line-height: 16px
@@ -97,6 +104,9 @@ input
   box-shadow: none !important
   border-radius: 0px !important
   background: transparent
+  margin-top: -5px !important
+  margin-left: 5px !important
+  margin-right: 5px !important
 
 
 .is-inline-number
@@ -107,5 +117,5 @@ input
 .is-drug-info
   height: 30em
   overflow-y: scroll
-  
+
 @import "../node_modules/bulma/bulma"
