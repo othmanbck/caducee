@@ -9,6 +9,7 @@ class Patient extends Component {
   async componentDidMount() {
     const { contract, accounts } = this.props;
     const prescriptionEvents = await contract.getPastEvents('WritePrescription', { fromBlock: 0, filter: { patient: accounts[0] } })
+    console.log(prescriptionEvents);
     const prescriptions = prescriptionEvents.map(async prescription => ({
       id: prescription.id,
       patient: prescription.returnValues.patient,
@@ -39,23 +40,31 @@ class Patient extends Component {
   render() {
     return (
       <div>
-        <h2 className="title is-4"> Patient {this.props.accounts[0]}</h2>
+        <div className="box-title">My Address</div>
+        <div className="pale-rect slim-rect">
+          <h3 className="title is-5">{this.props.accounts[0]}</h3>
+        </div>
+        <br/>
+        <div className="box-title">My Prescriptions</div>
         {this.state.prescriptions.map(prescription => (
-          <div key={prescription.id} className="box columns is-multiline">
-            {prescription.prescription.map(prescription => (
-              <Fragment key={JSON.stringify(prescription)}>
-                <div className="column is-one-third">
-                  <h2 className="title is-4">{prescription.drug.label}</h2>
-                  <br/>
-                  <p className="subtitle is-6">Quantity: {prescription.quantity}</p>
-                  <p className="subtitle is-6">Recurrence: {prescription.recurrence}</p>
-                  <p className="subtitle is-6">Posology: {prescription.posology}</p>
-                </div>
-                <div className="column is-two-thirds"><div className="box"><div className="is-drug-info" dangerouslySetInnerHTML={{__html: (this.state.drugs[prescription.drug.value] || {info: null}).info}}/></div></div>
-                <div className="column is-11"><br/></div>
-                <div className="column is-11"><br/></div>
-              </Fragment>
-            ))}
+          <div key={prescription.id} className="pale-rect">
+            <div className="dark-rect slim-rect">From Doctor {console.log(prescription)}</div>
+            <div className="columns is-multiline">
+              {prescription.prescription.map(prescription => (
+                <Fragment key={JSON.stringify(prescription)}>
+                  <div className="column is-one-third">
+                    <h2 className="title is-4">{prescription.drug.label}</h2>
+                    <br/>
+                    <p className="subtitle is-6">Quantity: {prescription.quantity}</p>
+                    <p className="subtitle is-6">Recurrence: {prescription.recurrence}</p>
+                    <p className="subtitle is-6">Posology: {prescription.posology}</p>
+                  </div>
+                  <div className="column is-two-thirds"><div className="box"><div className="is-drug-info" dangerouslySetInnerHTML={{__html: (this.state.drugs[prescription.drug.value] || {info: null}).info}}/></div></div>
+                  <div className="column is-11"><br/></div>
+                  <div className="column is-11"><br/></div>
+                </Fragment>
+              ))}
+            </div>
           </div>
         ))}
       </div>
