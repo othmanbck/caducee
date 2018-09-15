@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import NameTBDContract from "./contracts/NameTBD.json";
+import AsclepiusContract from "./contracts/Asclepius.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
 import NavBar from './components/NavBar';
@@ -33,7 +33,7 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
 
       // Get the contract instance.
-      const Contract = truffleContract(NameTBDContract);
+      const Contract = truffleContract(AsclepiusContract);
       Contract.setProvider(web3.currentProvider);
       const instance = await Contract.deployed();
 

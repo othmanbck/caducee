@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-contract NameTBD {
+contract Asclepius {
 
   event WritePrescription(
     address indexed patient,

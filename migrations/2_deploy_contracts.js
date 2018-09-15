@@ -1,5 +1,5 @@
-var NameTBD = artifacts.require("./NameTBD.sol");
+var Asclepius = artifacts.require("./Asclepius.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(NameTBD);
+  deployer.deploy(Asclepius);
 };
