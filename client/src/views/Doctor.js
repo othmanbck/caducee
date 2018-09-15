@@ -34,7 +34,7 @@ class Doctor extends Component {
   async writePrescription() {
     const { contract, accounts, node } = this.props;
     const prescriptionHash = (await node.files.add(new Buffer(JSON.stringify(this.state.items))))[0].hash;
-    await contract.writePrescription(this.patient, prescriptionHash, {from: accounts[0]});
+    await contract.writePrescription(this.state.patient, prescriptionHash, {from: accounts[0]});
   }
 
   render() {
