@@ -20,7 +20,7 @@ class Doctor extends Component {
   }
 
   onDrugSelect(drug) {
-    this.setState(prevState => ({ items: prevState.items.concat({drug: drug, quantity: "", recurrence: "", startDate: moment().format("YYYY-MM-DD"), endDate: ""})}));
+    this.setState(prevState => ({ items: prevState.items.concat({drug: drug, quantity: "", recurrence: "", posology: "", startDate: moment().format("YYYY-MM-DD"), endDate: ""})}));
   }
 
   handleChange(idx, field, value) {
@@ -132,6 +132,26 @@ class DoctorPrescription extends Component {
                             onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
                             value={item.recurrence}
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="field is-horizontal">
+                    <div className="field-label is-normal">
+                      <label className="label" htmlFor="posology">
+                        Posology:
+                      </label>
+                    </div>
+                    <div className="field-body">
+                      <div className="field">
+                        <div className="control">
+                          <textarea
+                            id="posology"
+                            className="textarea"
+                            onChange={(e) => this.props.handleChange(i, "posology", e.target.value)}
+                            value={item.posology}
+                          ></textarea>
                         </div>
                       </div>
                     </div>
