@@ -1,4 +1,4 @@
-# hackzurich2018
+# asclepius
 
 ## Install
 
