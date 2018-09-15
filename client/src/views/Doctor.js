@@ -7,10 +7,16 @@ class Doctor extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { items: [] };
+    this.state = { patient: '0x821aea9a577a9b44299b9c15c88cf3087f3b5544', items: [] };
+
+    this.setPatient = this.setPatient.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onDrugSelect = this.onDrugSelect.bind(this);
     this.writePrescription = this.writePrescription.bind(this);
+  }
+
+  setPatient(addr) {
+    this.setState({ patient: addr });
   }
 
   onDrugSelect(drug) {
@@ -28,24 +34,59 @@ class Doctor extends Component {
   async writePrescription() {
     const { contract, accounts, node } = this.props;
     const prescriptionHash = (await node.files.add(new Buffer(JSON.stringify(this.state.items))))[0].hash;
-    await contract.writePrescription('0x821aea9a577a9b44299b9c15c88cf3087f3b5544', prescriptionHash, {from: accounts[0]});
+    await contract.writePrescription(this.patient, prescriptionHash, {from: accounts[0]});
   }
 
   render() {
     return (
       <Fragment>
-        <h3 className="title is-5">Add drug to prescription</h3>
-        <DrugSearch req={this.props.req} onDrugSelect={ this.onDrugSelect } />
-        <br/>
+        <form>
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label" htmlFor="eth_addr">
+                <h3 className="title is-5">Patient address</h3>
+              </label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <div className="control">
+                  <input
+                    id="eth_addr"
+                    type="text"
+                    className="input"
+                    onChange={this.setPatient}
+                    value={this.patient}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="field is-horizontal">
+            <div className="field-label is-normal">
+              <label className="label" htmlFor="eth_addr">
+                <h3 className="title is-5">Add drug to prescription</h3>
+              </label>
+            </div>
+            <div className="field-body">
+              <div className="field">
+                <div className="control">
+                  <DrugSearch onDrugSelect={ this.onDrugSelect } />
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <br />
         <h3 className="title is-5">Current prescription :</h3>
-        <Prescription handleChange={this.handleChange} items={this.state.items} />
+        <DoctorPrescription handleChange={this.handleChange} items={this.state.items} />
         <button className="button is-info is-large" onClick={this.writePrescription}>Write Prescription</button>
       </Fragment>
     )
   }
 }
 
-class Prescription extends Component {
+class DoctorPrescription extends Component {
   render() {
     return (
       <Fragment>
@@ -62,7 +103,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             id="quantity"
@@ -83,7 +124,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             id="recurrence"
@@ -103,7 +144,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             type="date"
