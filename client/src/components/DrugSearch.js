@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Select from "react-select";
 
 const TIMEOUT = 1000;
 
@@ -10,25 +11,6 @@ class DrugSearch extends Component {
 
     this.state = { items: [], text: '', timer: null, req: null };
     this.handleChange = this.handleChange.bind(this);
-  }
-
-  render() {
-    return (
-      <div>
-        <h3>SEARCH DRUG</h3>
-        <DrugList items={this.state.items} />
-        <form>
-          <label htmlFor="new-drug">
-            Drug to search for:
-          </label>
-          <input
-            id="new-drug"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-        </form>
-      </div>
-    );
   }
 
   componentDidMount() {
@@ -43,7 +25,7 @@ class DrugSearch extends Component {
     clearTimeout(this.state.timer);
 
     this.setState({
-      text: e.target.value,
+      text: e,
       timer: setTimeout(() => this.requestDrug(), TIMEOUT)
      });
   }
@@ -51,7 +33,25 @@ class DrugSearch extends Component {
   async requestDrug() {
     const name = this.state.text;
     const {data} = await this.state.req.get('/drugs?name=' + name);
-    this.setState({ items: data.map(drug => drug.title)});
+    this.setState({ items: data.map(drug =>
+      ({ value: Math.random(), label: drug.title }))
+    });
+    return this.state.items;
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Async search</h3>
+        <Select
+          searchable={true}
+          autoload={false}
+          onInputChange={this.handleChange}
+          loadOptions={this.requestDrug}
+          options={this.state.items}
+        />
+      </div>
+    );
   }
 
 }
@@ -61,7 +61,7 @@ class DrugList extends React.Component {
     return (
       <ul>
         {this.props.items.map(item => (
-          <li key={Math.random()}>{item}</li>
+          <li key={item.value}>{item.label}</li>
         ))}
       </ul>
     );
