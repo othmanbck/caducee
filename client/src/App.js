@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from "react";
+import axios from "axios";
+import IPFS from 'ipfs';
 import AsclepiusContract from "./contracts/Asclepius.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
@@ -16,6 +18,7 @@ class App extends Component {
       accounts: null,
       contract: null,
       node: null,
+      req: null,
       accountsChecker: null,
       statusLoaded: false,
       isDoctor: false,
@@ -26,10 +29,14 @@ class App extends Component {
   }
 
   async componentDidMount() {
-
-    const IPFS = require('ipfs');
     const node = new IPFS();
     node.on('ready', () => {this.setState({ node });});
+
+    const req = axios.create({
+      baseURL: 'https://health.axa.ch/hack/api/',
+      headers: {'Authorization': 'tangy tooth'}
+    });
+
 
     try {
       // Get network provider and web3 instance.
@@ -47,7 +54,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance, accountsChecker }, this.getStatus);
+      this.setState({ web3, accounts, contract: instance, accountsChecker, req }, this.getStatus);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -105,7 +112,7 @@ class App extends Component {
 const StatusChooser = props => {
   if (props.isDoctor) return <Doctor {...props}/>;
   if (props.isPharmacy) return <Pharmacy {...props}/>;
-  return <Patient {...props}/>;
+  return <Patient key={props.accounts[0]} {...props}/>;
 }
 
 export default App;

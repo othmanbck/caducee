@@ -35,7 +35,7 @@ class Doctor extends Component {
     return (
       <Fragment>
         <h3 className="title is-5">Add drug to prescription</h3>
-        <DrugSearch onDrugSelect={ this.onDrugSelect } />
+        <DrugSearch req={this.props.req} onDrugSelect={ this.onDrugSelect } />
         <br/>
         <h3 className="title is-5">Current prescription :</h3>
         <Prescription handleChange={this.handleChange} items={this.state.items} />
@@ -51,9 +51,9 @@ class Prescription extends Component {
       <Fragment>
         <div className="box is-prescription columns is-multiline">
           {this.props.items.map((item, i) => (
-            <div className="column is-one-third" key={item.drug}>
+            <div className="column is-one-third" key={item.drug.value}>
               <div className="box">
-                <h3>{item.drug}</h3>
+                <h3 className="title is-6">{item.drug.label}</h3>
                 <form>
                   <div className="field is-horizontal">
                     <div className="field-label is-normal">
