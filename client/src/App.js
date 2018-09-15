@@ -96,7 +96,11 @@ class App extends Component {
     }
     return (
       <Fragment>
-        <NavBar/>
+        <NavBar
+          statusLoaded={this.state.statusLoaded}
+          isDoctor={this.state.isDoctor}
+          isPharmacy={this.state.isPharmacy}
+        />
         <div className="section">
           <div className="container">
             <StatusChooser
