@@ -62,7 +62,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             id="quantity"
@@ -83,7 +83,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             id="recurrence"
@@ -103,7 +103,7 @@ class Prescription extends Component {
                       </label>
                     </div>
                     <div className="field-body">
-                      <div className="field is-narrow">
+                      <div className="field">
                         <div className="control">
                           <input
                             type="date"
