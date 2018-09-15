@@ -32,11 +32,12 @@ class Doctor extends Component {
 
   render() {
     return (
-      <div>
-        <DrugSearch onDrugSelect={ this.onDrugSelect } />
-        <h3>Drugs</h3>
-        <Prescription handleChange={this.handleChange} items={this.state.items} />
-        <button className="button" onClick={this.writePrescription}>Write Prescription</button>
+      <div className="columns">
+        <div className="column is-three-fifths">
+          <DrugSearch onDrugSelect={ this.onDrugSelect } />
+          <Prescription handleChange={this.handleChange} items={this.state.items} />
+          <button className="button" onClick={this.writePrescription}>Write Prescription</button>
+        </div>
       </div>
     )
   }
@@ -45,41 +46,95 @@ class Doctor extends Component {
 class Prescription extends Component {
   render() {
     return (
-        <div>
+      <div>
+        <h3>Drugs</h3>
+        <div className="box">
           {this.props.items.map((item, i) => (
-            <div key={Math.random}>
-              <h3>{item.drug}</h3>
-              <form>
-                <label htmlFor="quantity">
-                  Quantity per use:
-                </label>
-                <input
-                  id="quantity"
-                  onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
-                  value={item.quantity}
-                />
-                <br />
-                <label htmlFor="recurrence">
-                  Use per day:
-                </label>
-                <input
-                  id="recurrence"
-                  onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
-                  value={item.recurrence}
-                />
-                <br />
-                <label htmlFor="end-date">
-                  End date:
-                </label>
-                <input
-                  type="date"
-                  id="end-date"
-                  onChange={(e) => this.props.handleChange(i, "endDate", e.target.value)}
-                  />
-              </form>
+            <div className="box">
+              <div key={Math.random}>
+                <h3>{item.drug}</h3>
+                <form>
+
+                  <div className="field is-horizontal">
+
+                    <div className="field-label is-normal">
+                      <label className="label" htmlFor="quantity">
+                        Quantity per use:
+                      </label>
+                    </div>
+
+                    <div className="field-body">
+                      <div className="field is-narrow">
+                        <div className="control">
+                          <input
+                            id="quantity"
+                            type="text"
+                            className="input is-rounded"
+                            onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
+                            value={item.quantity}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br />
+
+                  <div className="field is-horizontal">
+
+                    <div className="field-label is-normal">
+                      <label className="label" htmlFor="recurrence">
+                        Use per day:
+                      </label>
+                    </div>
+
+                    <div className="field-body">
+                      <div className="field is-narrow">
+                        <div className="control">
+                          <input
+                            id="recurrence"
+                            className="input is-rounded"
+                            onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
+                            value={item.recurrence}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <br />
+
+                  <div className="field is-horizontal">
+
+                    <div className="field-label is-normal">
+                      <label className="label" htmlFor="end-date">
+                        End date:
+                      </label>
+                    </div>
+
+                    <div className="field-body">
+                      <div className="field is-narrow">
+                        <div className="control">
+                          <input
+                            type="date"
+                            id="end-date"
+                            className="input is-rounded"
+                            onChange={(e) => this.props.handleChange(i, "endDate", e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </form>
+              </div>
             </div>
           ))}
         </div>
+      </div>
     )
   }
 }
