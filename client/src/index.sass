@@ -16,9 +16,9 @@ $axa-blue: #00008f
 $axa-red: #ff1721
 $primary: $axa-blue
 $cotton: #fad6de
-$cotton-invert: $axa-blue
+$cotton-invert: #000
 $igloo: #b5d0ee
-$igloo-invert: $axa-blue
+$igloo-invert: #000
 $info: $igloo
 $info-invert: $igloo-invert
 $danger: $cotton
@@ -71,4 +71,22 @@ body
 .slim-rect
   height: 45px
 
+input
+  border-top: transparent !important
+  border-left: transparent !important
+  border-right: transparent !important
+  border-bottom: 2px solid $igloo !important
+  box-shadow: none !important
+  border-radius: 0px !important
+  background: transparent
+
+
+.is-inline-number
+  display: inline-block !important
+  width: 3rem !important
+  text-align: center
+
+.is-drug-info
+  height: 30em
+  overflow-y: scroll
 @import "../node_modules/bulma/bulma"
