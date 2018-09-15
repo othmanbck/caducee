@@ -17,7 +17,7 @@
     "build-css": "node-sass --include-path ./src --include-path ./node_modules src/ -o src/",
     "start-js": "react-scripts start",
     "build-js": "react-scripts build",
-    "start": "run-p start-css start-js",
+    "start": "npm-run-all build-css --parallel start-css start-js",
     "build": "run-s build-css build-js",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
