@@ -6,8 +6,6 @@ import Doctor from './views/Doctor';
 import Pharmacy from './views/Pharmacy';
 import Patient from './views/Patient';
 
-import "./App.css";
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -80,12 +78,16 @@ class App extends Component {
       return <div>Loading your status...</div>;
     }
     return (
-      <div className="App">
-        <h1>Name TBD</h1>
-        <StatusChooser
-          isDoctor={this.state.isDoctor}
-          isPharmacy={this.state.isPharmacy}
-        />
+      <div className="section">
+        <div className="container">
+          <h1 className="title has-text-primary has-text-centered">
+            Name TBD
+          </h1>
+          <StatusChooser
+            isDoctor={this.state.isDoctor}
+            isPharmacy={this.state.isPharmacy}
+          />
+        </div>
       </div>
     );
   }
