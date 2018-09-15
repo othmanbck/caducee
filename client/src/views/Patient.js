@@ -47,9 +47,9 @@ class Patient extends Component {
                 <div className="column is-one-third">
                   <h2 className="title is-4">{prescription.drug.label}</h2>
                   <br/>
-                  <p className="subtitle is-5">Quantity: {prescription.quantity}</p>
-                  <p className="subtitle is-5">Recurrence: {prescription.recurrence}</p>
-                  <p className="subtitle is-5">Posology: {prescription.posology}</p>
+                  <p className="subtitle is-6">Quantity: {prescription.quantity}</p>
+                  <p className="subtitle is-6">Recurrence: {prescription.recurrence}</p>
+                  <p className="subtitle is-6">Posology: {prescription.posology}</p>
                 </div>
                 <div className="column is-two-thirds" style={{height: "30em", overflowY: "scroll"}}><div className="box content is-small" dangerouslySetInnerHTML={{__html: (this.state.drugs[prescription.drug.value] || {info: null}).info}}/></div>
                 <div className="column is-11"><br/></div>
