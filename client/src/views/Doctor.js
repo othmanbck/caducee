@@ -55,7 +55,7 @@ class Doctor extends Component {
                     type="text"
                     className="input"
                     onChange={this.setPatient}
-                    value={this.patient}
+                    value={this.state.patient}
                   />
                 </div>
               </div>
@@ -71,7 +71,7 @@ class Doctor extends Component {
             <div className="field-body">
               <div className="field">
                 <div className="control">
-                  <DrugSearch onDrugSelect={ this.onDrugSelect } />
+                  <DrugSearch req={this.props.req} onDrugSelect={ this.onDrugSelect } />
                 </div>
               </div>
             </div>
