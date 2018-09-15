@@ -11,6 +11,7 @@ class DrugSearch extends Component {
 
     this.state = { items: [], text: '', timer: null, req: null };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +31,10 @@ class DrugSearch extends Component {
      });
   }
 
+  handleSelect(e) {
+    this.props.onDrugSelect(e.label);
+  }
+
   async requestDrug() {
     const name = this.state.text;
     const {data} = await this.state.req.get('/drugs?name=' + name);
@@ -47,6 +52,7 @@ class DrugSearch extends Component {
           searchable={true}
           autoload={false}
           onInputChange={this.handleChange}
+          onChange={this.handleSelect}
           loadOptions={this.requestDrug}
           options={this.state.items}
         />
@@ -54,18 +60,6 @@ class DrugSearch extends Component {
     );
   }
 
-}
-
-class DrugList extends React.Component {
-  render() {
-    return (
-      <ul>
-        {this.props.items.map(item => (
-          <li key={item.value}>{item.label}</li>
-        ))}
-      </ul>
-    );
-  }
 }
 
 export default DrugSearch;

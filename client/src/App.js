@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import NameTBDContract from "./contracts/NameTBD.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
-import DrugSearch from "./components/DrugSearch";
 import Doctor from './views/Doctor';
 import Pharmacy from './views/Pharmacy';
 import Patient from './views/Patient';
@@ -87,7 +86,6 @@ class App extends Component {
           isDoctor={this.state.isDoctor}
           isPharmacy={this.state.isPharmacy}
         />
-        <DrugSearch />
       </div>
     );
   }
