@@ -5,6 +5,13 @@
 
 $family-primary: 'Source Sans Pro', sans-serif
 
+$logo-blue: #85A8D4
+$title-green: #2E707E
+$box-blue: #FAFAFA
+$header-pink: #F4D6DE
+$header-green: #9FD9B4
+$header-mauve: #A6A6BB
+
 $axa-blue: #00008f
 $axa-red: #ff1721
 $primary: $axa-blue
@@ -17,7 +24,10 @@ $info-invert: $igloo-invert
 $danger: $cotton
 $danger-invert: $cotton-invert
 
-@import "../node_modules/bulma/bulma"
+$dark: $header-mauve
+$success: $header-green
+$warning: $header-pink
+$message-background-color: #FFFFFF
 
 .navbar
   background: $cotton
@@ -28,3 +38,37 @@ $danger-invert: $cotton-invert
 
 .navbar-end > .navbar-item > .subtitle
   margin-right: 10rem
+
+html
+  height: 100%
+
+body
+  height: 100%
+  margin: 0
+  background-repeat: no-repeat
+  background: linear-gradient(225.3deg, #DFEAF7 0%, #83A6D3 100%)
+
+.box-title
+  font-size: 14px
+  font-weight: bold
+  color: $title-green
+  line-height: 19px
+  letter-spacing: -0.18px
+  margin-bottom: 10px
+
+//form > input > .input
+  height: 45px
+  border-radius: 10px
+
+.pale-rect
+  border-radius: 10px
+  background-color: $box-blue
+
+.dark-rect
+  border-radius: 10px
+  background-color: rgba(46,112,126,0.3)
+
+.slim-rect
+  height: 45px
+
+@import "../node_modules/bulma/bulma"

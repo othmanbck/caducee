@@ -58,16 +58,20 @@ class Pharmacy extends Component {
   render() {
     return(
       <Fragment>
-      <form onSubmit={this.filterPrescriptionsByPatient}>
-        <div className="field is-horizontal">
-          <div className="field-label is-normal">
-            <label className="label" htmlFor="eth_addr">
-              <h3 className="title is-5">Patient address</h3>
-            </label>
-          </div>
-          <div className="field-body">
-            <div className="field has-addons">
-              <div className="control is-expanded">
+      <div className="box-title">New Prescription Received</div>
+
+      <div className="pale-rect slim-rect">
+        <form onSubmit={this.filterPrescriptionsByPatient}>
+          <div className="field is-horizontal">
+
+            <div className="field-label">
+              <label className="label" htmlFor="eth_addr">
+                <h3 className="title is-5">Patient address</h3>
+              </label>
+            </div>
+
+            <div className="field is-grouped">
+              <p className="control is-expanded">
                 <input
                   id="eth_addr"
                   type="text"
@@ -75,17 +79,19 @@ class Pharmacy extends Component {
                   onChange={this.handleChange}
                   value={this.state.patient}
                 />
-              </div>
-              <div className="control">
+              </p>
+              <p className="control">
                 <button type="submit" className="button is-info">Submit</button>
-              </div>
+              </p>
             </div>
+
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
 
       <br />
-      <PharmacyPrescription filtered_prescriptions= {this.state.filtered_prescriptions} />
+      <div className="box-title">Pending Prescriptions</div>
+        <PharmacyPrescription filtered_prescriptions= {this.state.filtered_prescriptions} />
       </Fragment>
     )
   }
@@ -97,7 +103,31 @@ class PharmacyPrescription extends Component {
     return (
       <Fragment>
       {this.props.filtered_prescriptions.map((prescription, idx) => (
-        <Fragment key={idx}><h3 className="title is-2">Prescription {idx+1}</h3>
+        <div className="pale-rect">
+        <Fragment key={idx}>
+        <div className="dark-rect slim-rect">
+          <form>
+            <div className="field is-horizontal">
+
+              <div className="field-label">
+                <label className="label" htmlFor="eth_addr">
+                  <h3 className="title is-5">Doctor address</h3>
+                </label>
+              </div>
+
+              <div className="field is-grouped">
+                  <input
+                    id="eth_addr"
+                    type="text"
+                    className="input"
+                    value={prescription.patient}
+                    disabled
+                  />
+              </div>
+
+            </div>
+          </form>
+        </div>
         <div className="box is-prescription">
         {prescription.prescription.map(drug =>
           <Fragment key={drug.drug.value}>
@@ -105,8 +135,12 @@ class PharmacyPrescription extends Component {
             <div className="columns is-multiline">
 
             <div className="column is-one-third">
-              <div className="box">
-              <p>Prescription</p>
+
+            <article className="message is-warning">
+              <div className="message-header">
+                <p>Dark</p>
+              </div>
+              <div className="message-body">
                 <form>
                   <div className="field is-horizontal">
                     <div className="field-label is-normal">
@@ -213,24 +247,34 @@ class PharmacyPrescription extends Component {
                   </div>
                 </form>
               </div>
+            </article>
+          </div>
+
+            <div className="column is-one-third">
+              <article className="message is-success">
+                <div className="message-header">
+                  <p>Prescribed Medicine Status</p>
+                </div>
+                <div className="message-body">
+                </div>
+              </article>
             </div>
 
             <div className="column is-one-third">
-              <div className="box">
-              <p>Current Order</p>
-              </div>
-            </div>
-
-            <div className="column is-one-third">
-              <div className="box">
-              <p>More Info</p>
-              </div>
+              <article className="message is-dark">
+                <div className="message-header">
+                  <p>Description Details</p>
+                </div>
+                <div className="message-body">
+                </div>
+              </article>
             </div>
             </div>
             </Fragment>
           )}
         </div>
         </Fragment>
+        </div>
         ))}
       </Fragment>
     )
