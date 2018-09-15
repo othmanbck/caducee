@@ -9,7 +9,7 @@ export default props => (
     </div>
     <div className="navbar-end">
       <div className="navbar-item">
-        <h2 className="title is-2">
+        <h2 className="subtitle is-2">
           {props.statusLoaded && (
             props.isDoctor
             ? (<Fragment>Hello, Doctor <span aria-label="doctor" role="img">👩‍⚕️</span></Fragment>)
