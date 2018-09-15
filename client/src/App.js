@@ -11,16 +11,19 @@ import "./App.css";
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       storageValue: 0,
       web3: null,
       accounts: null,
       contract: null,
+      accountsChecker: null,
       statusLoaded: false,
       isDoctor: false,
       isPharmacy: false
     };
+    this.checkAccount = this.checkAccount.bind(this);
+    this.getStatus = this.getStatus.bind(this);
   }
 
   async componentDidMount() {
@@ -36,9 +39,11 @@ class App extends Component {
       Contract.setProvider(web3.currentProvider);
       const instance = await Contract.deployed();
 
+      const accountsChecker = setInterval(this.checkAccount, 1000);
+
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.getStatus);
+      this.setState({ web3, accounts, contract: instance, accountsChecker }, this.getStatus);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -46,16 +51,27 @@ class App extends Component {
       );
       console.log(error);
     }
-  };
+  }
+
+  async checkAccount() {
+    const accounts = await this.state.web3.eth.getAccounts();
+    if (accounts[0] !== this.state.accounts[0]) {
+      this.setState({ accounts }, this.getStatus);
+    }
+  }
 
   async getStatus() {
     const { accounts, contract } = this.state;
 
     const isDoctor = await contract.doctors(accounts[0]);
     const isPharmacy = await contract.pharmacies(accounts[0]);
-    
+
     this.setState({ statusLoaded: true, isDoctor, isPharmacy });
-  };
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.accountsChecker);
+  }
 
   render() {
     if (!this.state.web3) {
