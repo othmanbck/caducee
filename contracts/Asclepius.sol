@@ -4,7 +4,7 @@ contract Asclepius {
 
   event WritePrescription(
     address indexed patient,
-    bytes32 prescriptionHash
+    string prescriptionHash
   );
 
   address public owner;
@@ -38,7 +38,7 @@ contract Asclepius {
     pharmacies[pharmacy] = false;
   }
 
-  function writePrescription(address patient, bytes32 prescriptionHash) public isDoctor() {
+  function writePrescription(address patient, string prescriptionHash) public isDoctor() {
     emit WritePrescription(patient, prescriptionHash);
   }
 }
