@@ -34,7 +34,7 @@ class App extends Component {
 
     const req = axios.create({
       baseURL: 'https://health.axa.ch/hack/api/',
-      headers: {'Authorization': 'tangy tooth'}
+      headers: {'Authorization': 'tangy tooth', 'Accept-Language': 'fr'}
     });
 
 

@@ -103,7 +103,7 @@ class PharmacyPrescription extends Component {
                             type="text"
                             className="input"
                             value={drug.quantity}
-                            readOnly
+                            disabled
                           />
                         </div>
                       </div>
@@ -123,8 +123,28 @@ class PharmacyPrescription extends Component {
                             id="recurrence"
                             className="input"
                             value={drug.recurrence}
-                            readOnly
+                            disabled
                           />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="field is-horizontal">
+                    <div className="field-label is-normal">
+                      <label className="label" htmlFor="posology">
+                        Posology:
+                      </label>
+                    </div>
+                    <div className="field-body">
+                      <div className="field">
+                        <div className="control">
+                          <textarea
+                            id="posology"
+                            className="textarea"
+                            value={drug.posology}
+                            disabled
+                          ></textarea>
                         </div>
                       </div>
                     </div>
@@ -144,7 +164,7 @@ class PharmacyPrescription extends Component {
                             id="start-date"
                             className="input"
                             value={drug.startDate}
-                            readOnly
+                            disabled
                           />
                         </div>
                       </div>
@@ -165,7 +185,7 @@ class PharmacyPrescription extends Component {
                             id="end-date"
                             className="input"
                             value={drug.endDate}
-                            readOnly
+                            disabled
                           />
                         </div>
                       </div>

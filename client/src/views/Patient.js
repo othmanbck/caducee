@@ -21,17 +21,14 @@ class Patient extends Component {
 
   async getDrugsInfo() {
     const drugList = this.state.prescriptions.map(prescription => prescription.prescription).flat().map(prescription => prescription.drug.value);
-    console.log(drugList)
     const drugInfo = await Promise.all(drugList.map(async id => {
       var info;
       var drug;
       try {
-        info = (await this.props.req('/drugs/' + id + '/info/patient')).data;
+        info = (await this.props.req('/drugs/' + id + '/info/patient?type=pure-html')).data;
         drug = (await this.props.req('/drugs/' + id)).data;
       } catch (e) {
-        console.log(e);
       }
-      console.log(drug)
       return { info: info, ...drug }
     }));
     const drugs = {};
@@ -50,8 +47,8 @@ class Patient extends Component {
                 <div className="column is-one-third">
                   <h2 className="title is-4">{prescription.drug.label}</h2>
                   <br/>
-                  <p className="subtitle is-4">Quantity: {prescription.quantity}</p>
-                  <p className="subtitle is-4">Recurrence: {prescription.recurrence}</p>
+                  <p className="subtitle is-6">Quantity: {prescription.quantity}</p>
+                  <p className="subtitle is-6">Recurrence: {prescription.recurrence}</p>
                 </div>
                 <div className="column is-two-thirds" style={{height: "30em", overflowY: "scroll"}}><div className="box content is-small" dangerouslySetInnerHTML={{__html: (this.state.drugs[prescription.drug.value] || {info: null}).info}}/></div>
                 <div className="column is-11"><br/></div>
