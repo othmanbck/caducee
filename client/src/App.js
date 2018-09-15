@@ -36,7 +36,7 @@ class App extends Component {
   };
 
   runExample = async () => {
-    const { accounts, contract } = this.state;
+    const { /*accounts, */contract } = this.state;
 
     // Stores a given value, 5 by default.
     //await contract.set(5, { from: accounts[0] });
