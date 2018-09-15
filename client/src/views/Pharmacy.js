@@ -103,8 +103,33 @@ class PharmacyPrescription extends Component {
     return (
       <Fragment>
       {this.props.filtered_prescriptions.map((prescription, idx) => (
-        <div className="pale-rect">
+        <div className="box">
         <Fragment key={idx}>
+
+        <div className="message-header">
+          <form>
+            <div className="field is-horizontal">
+
+              <div className="field-label">
+                <label className="label" htmlFor="eth_addr">
+                  <h3 className="title is-5">Doctor address</h3>
+                </label>
+              </div>
+
+              <div className="field is-grouped">
+                  <input
+                    id="eth_addr"
+                    type="text"
+                    className="input"
+                    value={prescription.patient}
+                    disabled
+                  />
+              </div>
+
+            </div>
+          </form>
+        </div>
+
         <div className="dark-rect slim-rect">
           <form>
             <div className="field is-horizontal">
@@ -128,59 +153,40 @@ class PharmacyPrescription extends Component {
             </div>
           </form>
         </div>
-        <div className="box is-prescription">
+
         {prescription.prescription.map(drug =>
           <Fragment key={drug.drug.value}>
-            <h3 className="subtitle is-3">{drug.drug.label}</h3>
             <div className="columns is-multiline">
 
             <div className="column is-one-third">
             <article className="message is-warning">
               <div className="message-header">
-                <p>Prescription</p>
+                <p className="message-title">{drug.drug.label}</p>
               </div>
               <div className="message-body">
                 <form>
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="quantity">
-                        Quantity per use:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            id="quantity"
-                            type="number"
-                            className="input"
-                            value={drug.quantity}
-                            disabled
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="field">
+                    Patient should take
+                      <input
+                        id="quantity"
+                        type="text"
+                        className="input is-inline-number"
+                        value={drug.quantity}
+                        readOnly
+                      />
+                    each dose
                   </div>
                   <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="recurrence">
-                        Use per day:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            id="recurrence"
-                            type="number"
-                            className="input"
-                            value={drug.recurrence}
-                            disabled
-                          />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="field">
+                    Patient takes a dose
+                      <input
+                        id="recurrence"
+                        className="input is-inline-number"
+                        type="text"
+                        value={drug.recurrence}
+                        readOnly
+                      />
+                    times a day
                   </div>
                   <br />
                   <div className="field is-horizontal">
@@ -196,7 +202,7 @@ class PharmacyPrescription extends Component {
                             id="posology"
                             className="textarea"
                             value={drug.posology}
-                            disabled
+                            readOnly
                           ></textarea>
                         </div>
                       </div>
@@ -217,12 +223,11 @@ class PharmacyPrescription extends Component {
                             id="start-date"
                             className="input"
                             value={drug.startDate}
-                            disabled
+                            readOnly
                           />
                         </div>
                       </div>
                     </div>
-                  </div>
                   <br />
                   <div className="field is-horizontal">
                     <div className="field-label is-normal">
@@ -238,12 +243,13 @@ class PharmacyPrescription extends Component {
                             id="end-date"
                             className="input"
                             value={drug.endDate}
-                            disabled
+                            readOnly
                           />
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
                 </form>
               </div>
             </article>
@@ -252,7 +258,7 @@ class PharmacyPrescription extends Component {
             <div className="column is-one-third">
               <article className="message is-success">
                 <div className="message-header">
-                  <p>Prescribed Medicine Status</p>
+                  <p className="message-title">Prescribed Medicine Status</p>
                 </div>
                 <div className="message-body">
                   <PrescriptionStatus
@@ -269,7 +275,7 @@ class PharmacyPrescription extends Component {
             <div className="column is-one-third">
               <article className="message is-dark">
                 <div className="message-header">
-                  <p>Description Details</p>
+                  <p className="message-title">Description Details</p>
                 </div>
                 <div className="message-body">
                   <PrescriptionInfo req={this.props.req} drug={drug}/>
@@ -279,7 +285,7 @@ class PharmacyPrescription extends Component {
             </div>
             </Fragment>
           )}
-        </div>
+
         </Fragment>
         </div>
         ))}
