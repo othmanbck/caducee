@@ -37,11 +37,14 @@ class DrugSearch extends Component {
 
   async requestDrug() {
     const name = this.state.text;
-    const {data} = await this.state.req.get('/drugs?name=' + name);
-    this.setState({ items: data.map(drug =>
-      ({ value: Math.random(), label: drug.title }))
-    });
-    return this.state.items;
+    try {
+      const {data} = await this.state.req.get('/drugs?name=' + name);
+      this.setState({ items: data.map(drug =>
+        ({ value: Math.random(), label: drug.title }))
+      });
+    } catch(e) {
+      
+    }
   }
 
   render() {
