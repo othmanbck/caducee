@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import NameTBDContract from "./contracts/NameTBD.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
+import NavBar from './components/NavBar';
 import Doctor from './views/Doctor';
 import Pharmacy from './views/Pharmacy';
 import Patient from './views/Patient';
@@ -78,17 +79,17 @@ class App extends Component {
       return <div>Loading your status...</div>;
     }
     return (
-      <div className="section">
-        <div className="container">
-          <h1 className="title has-text-primary has-text-centered">
-            Name TBD
-          </h1>
-          <StatusChooser
-            isDoctor={this.state.isDoctor}
-            isPharmacy={this.state.isPharmacy}
-          />
+      <Fragment>
+        <NavBar/>
+        <div className="section">
+          <div className="container">
+            <StatusChooser
+              isDoctor={this.state.isDoctor}
+              isPharmacy={this.state.isPharmacy}
+            />
+          </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
