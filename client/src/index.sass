@@ -1,18 +1,17 @@
 @charset "utf-8"
 @import "../node_modules/bulma/sass/utilities/initial-variables"
 
-@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville|Source+Sans+Pro')
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro')
 
 $family-primary: 'Source Sans Pro', sans-serif
 
-$family-serif: 'Libre Baskerville', serif
-
-$axa: #00008f
-$primary: $axa
+$axa-blue: #00008f
+$axa-red: #ff1721
+$primary: $axa-blue
 $cotton: #fad6de
-$cotton-invert: $axa
+$cotton-invert: $axa-blue
 $igloo: #b5d0ee
-$igloo-invert: $axa
+$igloo-invert: $axa-blue
 $info: $igloo
 $info-invert: $igloo-invert
 $danger: $cotton
@@ -20,12 +19,12 @@ $danger-invert: $cotton-invert
 
 @import "../node_modules/bulma/bulma"
 
-.has-font-serif
-  font-family: $family-serif
-
 .navbar
   background: $cotton
 
 .navbar-brand
   margin: 1rem
   margin-left: 10rem
+
+.navbar-end > .navbar-item > .subtitle
+  margin-right: 10rem

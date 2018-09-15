@@ -4,7 +4,7 @@ import moment from 'moment';
 class Pharmacy extends Component {
   constructor(props) {
     super(props);
-    this.state = { patient: "", prescriptions: [], filtered_prescriptions: [] };
+    this.state = { patient: "0x821aea9a577a9b44299b9c15c88cf3087f3b5544", prescriptions: [], filtered_prescriptions: [] };
 
     this.handleChange = this.handleChange.bind(this);
     this.filterPrescriptionsByDate = this.filterPrescriptionsByDate.bind(this);
@@ -119,7 +119,7 @@ class PharmacyPrescription extends Component {
                         <div className="control">
                           <input
                             id="quantity"
-                            type="text"
+                            type="number"
                             className="input"
                             value={drug.quantity}
                             disabled
@@ -140,6 +140,7 @@ class PharmacyPrescription extends Component {
                         <div className="control">
                           <input
                             id="recurrence"
+                            type="number"
                             className="input"
                             value={drug.recurrence}
                             disabled

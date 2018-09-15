@@ -1,5 +1,5 @@
-var Asclepius = artifacts.require("./Asclepius.sol");
+var Caducee = artifacts.require("./Caducee.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Asclepius);
+  deployer.deploy(Caducee);
 };
