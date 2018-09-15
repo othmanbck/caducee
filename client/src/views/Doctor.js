@@ -35,6 +35,7 @@ class Doctor extends Component {
     const { contract, accounts, node } = this.props;
     const prescriptionHash = (await node.files.add(new Buffer(JSON.stringify(this.state.items))))[0].hash;
     await contract.writePrescription(this.state.patient, prescriptionHash, {from: accounts[0]});
+    this.setState({ items: [] });
   }
 
   render() {
