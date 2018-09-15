@@ -2,15 +2,28 @@ import React, { Component } from "react";
 import NameTBDContract from "./contracts/NameTBD.json";
 import getWeb3 from "./utils/getWeb3";
 import truffleContract from "truffle-contract";
-
 import DrugSearch from "./components/DrugSearch";
+import Doctor from './views/Doctor';
+import Pharmacy from './views/Pharmacy';
+import Patient from './views/Patient';
 
 import "./App.css";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  constructor(props) {
+    super(props)
+    this.state = {
+      storageValue: 0,
+      web3: null,
+      accounts: null,
+      contract: null,
+      statusLoaded: false,
+      isDoctor: false,
+      isPharmacy: false
+    };
+  }
 
-  componentDidMount = async () => {
+  async componentDidMount() {
     try {
       // Get network provider and web3 instance.
       const web3 = await getWeb3();
@@ -25,7 +38,7 @@ class App extends Component {
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
-      this.setState({ web3, accounts, contract: instance }, this.runExample);
+      this.setState({ web3, accounts, contract: instance }, this.getStatus);
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -35,40 +48,39 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
-    const { /*accounts, */contract } = this.state;
+  async getStatus() {
+    const { accounts, contract } = this.state;
 
-    // Stores a given value, 5 by default.
-    //await contract.set(5, { from: accounts[0] });
-
-    // Get the value from the contract to prove it worked.
-    const response = await contract.get();
-
-    // Update state with the result.
-    this.setState({ storageValue: response.toNumber() });
+    const isDoctor = await contract.doctors(accounts[0]);
+    const isPharmacy = await contract.pharmacies(accounts[0]);
+    
+    this.setState({ statusLoaded: true, isDoctor, isPharmacy });
   };
 
   render() {
     if (!this.state.web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return <div>Loading Blockchain...</div>;
+    }
+    if (!this.state.statusLoaded) {
+      return <div>Loading your status...</div>;
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 37</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
+        <h1>Name TBD</h1>
+        <StatusChooser
+          isDoctor={this.state.isDoctor}
+          isPharmacy={this.state.isPharmacy}
+        />
         <DrugSearch />
       </div>
     );
   }
+}
+
+const StatusChooser = props => {
+  if (props.isDoctor) return <Doctor/>;
+  if (props.isPharmacy) return <Pharmacy/>;
+  return <Patient/>;
 }
 
 export default App;

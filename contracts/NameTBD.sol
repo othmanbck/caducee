@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 
 contract NameTBD {
-  address owner;
-  mapping(address => bool) doctors;
-  mapping(address => bool) pharmacies;
+  address public owner;
+  mapping(address => bool) public doctors;
+  mapping(address => bool) public pharmacies;
   uint storedData;
 
   modifier isOwner() { require(msg.sender == owner); _; }
