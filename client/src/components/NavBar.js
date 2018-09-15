@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './NavBar.css';
-
 export default () => (
   <nav className="navbar" aria-label="main navigation">
     <div className="navbar-brand">

@@ -43,23 +43,20 @@ class DrugSearch extends Component {
         ({ value: Math.random(), label: drug.title }))
       });
     } catch(e) {
-      
+
     }
   }
 
   render() {
     return (
-      <div>
-        <h3>Async search</h3>
-        <Select
-          searchable={true}
-          autoload={false}
-          onInputChange={this.handleChange}
-          onChange={this.handleSelect}
-          loadOptions={this.requestDrug}
-          options={this.state.items}
-        />
-      </div>
+      <Select
+        searchable={true}
+        autoload={false}
+        onInputChange={this.handleChange}
+        onChange={this.handleSelect}
+        loadOptions={this.requestDrug}
+        options={this.state.items}
+      />
     );
   }
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Buffer } from 'buffer';
 import moment from 'moment';
 import DrugSearch from '../components/DrugSearch';
@@ -33,13 +33,14 @@ class Doctor extends Component {
 
   render() {
     return (
-      <div className="columns">
-        <div className="column is-three-fifths">
-          <DrugSearch onDrugSelect={ this.onDrugSelect } />
-          <Prescription handleChange={this.handleChange} items={this.state.items} />
-          <button className="button" onClick={this.writePrescription}>Write Prescription</button>
-        </div>
-      </div>
+      <Fragment>
+        <h3 className="title is-5">Add drug to prescription</h3>
+        <DrugSearch onDrugSelect={ this.onDrugSelect } />
+        <br/>
+        <h3 className="title is-5">Current prescription :</h3>
+        <Prescription handleChange={this.handleChange} items={this.state.items} />
+        <button className="button is-info is-large" onClick={this.writePrescription}>Write Prescription</button>
+      </Fragment>
     )
   }
 }
@@ -47,95 +48,79 @@ class Doctor extends Component {
 class Prescription extends Component {
   render() {
     return (
-      <div>
-        <h3>Drugs</h3>
-        <div className="box">
+      <Fragment>
+        <div className="box is-prescription columns is-multiline">
           {this.props.items.map((item, i) => (
-            <div className="box">
-              <div key={Math.random}>
+            <div className="column is-one-third" key={item.drug}>
+              <div className="box">
                 <h3>{item.drug}</h3>
                 <form>
-
                   <div className="field is-horizontal">
-
                     <div className="field-label is-normal">
                       <label className="label" htmlFor="quantity">
                         Quantity per use:
                       </label>
                     </div>
-
                     <div className="field-body">
                       <div className="field is-narrow">
                         <div className="control">
                           <input
                             id="quantity"
                             type="text"
-                            className="input is-rounded"
+                            className="input"
                             onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
                             value={item.quantity}
                           />
                         </div>
                       </div>
                     </div>
-
                   </div>
-
                   <br />
-
                   <div className="field is-horizontal">
-
                     <div className="field-label is-normal">
                       <label className="label" htmlFor="recurrence">
                         Use per day:
                       </label>
                     </div>
-
                     <div className="field-body">
                       <div className="field is-narrow">
                         <div className="control">
                           <input
                             id="recurrence"
-                            className="input is-rounded"
+                            className="input"
                             onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
                             value={item.recurrence}
                           />
                         </div>
                       </div>
                     </div>
-
                   </div>
-
                   <br />
-
                   <div className="field is-horizontal">
-
                     <div className="field-label is-normal">
                       <label className="label" htmlFor="end-date">
                         End date:
                       </label>
                     </div>
-
                     <div className="field-body">
                       <div className="field is-narrow">
                         <div className="control">
                           <input
                             type="date"
                             id="end-date"
-                            className="input is-rounded"
+                            className="input"
                             onChange={(e) => this.props.handleChange(i, "endDate", e.target.value)}
                           />
                         </div>
                       </div>
                     </div>
-
                   </div>
-
                 </form>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </Fragment>
     )
   }
 }

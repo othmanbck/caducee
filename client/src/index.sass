@@ -7,11 +7,25 @@ $family-primary: 'Source Sans Pro', sans-serif
 
 $family-serif: 'Libre Baskerville', serif
 
-$primary: #00008f
+$axa: #00008f
+$primary: $axa
 $cotton: #fad6de
+$cotton-invert: $axa
 $igloo: #b5d0ee
+$igloo-invert: $axa
+$info: $igloo
+$info-invert: $igloo-invert
+$danger: $cotton
+$danger-invert: $cotton-invert
 
 @import "../node_modules/bulma/bulma"
 
 .has-font-serif
   font-family: $family-serif
+
+.navbar
+  background: $cotton
+
+.navbar-brand
+  margin: 1rem
+  margin-left: 10rem
