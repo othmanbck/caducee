@@ -3,7 +3,10 @@ import React, { Component, Fragment } from 'react';
 class Pharmacy extends Component {
   constructor(props) {
     super(props);
-    this.state = { prescriptions: [] };
+    this.state = { patient: "", prescriptions: [], filtered_prescriptions: [] };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.filterPrescriptions = this.filterPrescriptions.bind(this);
   }
 
   async componentDidMount() {
@@ -19,16 +22,67 @@ class Pharmacy extends Component {
     this.setState({ prescriptions: await Promise.all(prescriptions) });
   }
 
+  handleChange(e) {
+    this.setState({ patient: e.target.value });
+  }
+
+  filterPrescriptions(e) {
+    e.preventDefault();
+    if (!this.state.patient.length) {
+      return;
+    }
+
+    const patient_id = this.state.patient;
+    this.setState(prevState => ({ filtered_prescriptions: prevState.prescriptions.filter((prescription) => prescription.patient.toLowerCase() === patient_id.toLowerCase()) }));
+  }
+
   render() {
-    console.log(this.state.prescriptions);
+    return(
+      <Fragment>
+      <form onSubmit={this.filterPrescriptions}>
+        <div className="field is-horizontal">
+          <div className="field-label is-normal">
+            <label className="label" htmlFor="eth_addr">
+              <h3 className="title is-5">Patient address</h3>
+            </label>
+          </div>
+          <div className="field-body">
+            <div className="field has-addons">
+              <div className="control is-expanded">
+                <input
+                  id="eth_addr"
+                  type="text"
+                  className="input"
+                  onChange={this.handleChange}
+                  value={this.state.patient}
+                />
+              </div>
+              <div className="control">
+                <button type="submit" className="button is-info">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <br />
+      <PharmacyPrescription filtered_prescriptions= {this.state.filtered_prescriptions} />
+      </Fragment>
+    )
+  }
+
+}
+
+class PharmacyPrescription extends Component {
+  render() {
     return (
       <Fragment>
-      {this.state.prescriptions.map(prescription => (
-
+      {this.props.filtered_prescriptions.map((prescription, idx) => (
+        <Fragment><h3 className="prescription_nbr">Prescription {idx+1}</h3>
         <div className="box is-prescription">
         {prescription.prescription.map(drug =>
           <Fragment>
-            <h3>{drug.drug}</h3>
+            <h3 className="drug_name">{drug.drug}</h3>
             <div className="columns is-multiline">
 
 
@@ -148,6 +202,7 @@ class Pharmacy extends Component {
             </Fragment>
           )}
         </div>
+        </Fragment>
         ))}
       </Fragment>
     )
