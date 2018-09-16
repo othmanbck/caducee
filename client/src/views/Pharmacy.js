@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { Buffer } from 'buffer';
 import moment from 'moment';
+import PrescriptionStatus from '../components/PrescriptionStatus';
+import PrescriptionInfo from '../components/PrescriptionInfo';
 
 class Pharmacy extends Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class PharmacyPrescription extends Component {
   }
   render() {
     return this.props.filtered_prescriptions.map((prescription, idx) => (
-      <div className="box">
+      <div className="box" key={prescription.id}>
         <div className="message is-primary is-standalone">
           <div className="message-header">
             <h3 className="title is-5">From Doctor {this.state.doctor}</h3>
@@ -220,97 +221,5 @@ class PharmacyPrescription extends Component {
   }
 }
 
-class PrescriptionStatus extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { followup: 0, quantityBrought: 0, totalUnits: 0 };
-    this.updateFollowup = this.updateFollowup.bind(this);
-    this.onChangeFollowup = this.onChangeFollowup.bind(this);
-    this.submitFollowup = this.submitFollowup.bind(this);
-  }
-
-  async updateFollowup() {
-    const { contract } = this.props;
-    const followupEvents = await contract.getPastEvents('WriteFollowup', { fromBlock: 0 })
-    const followups = followupEvents.map(async followup => ({
-      id: followup.id,
-      followupHash: followup.returnValues.followupHash,
-      followup: JSON.parse((await this.props.node.files.cat(followup.returnValues.followupHash)).toString('utf-8'))
-    })).filter(async followup => ((await followup).followup.prescriptionHash || '').toLowerCase() === this.props.prescriptionHash.toLowerCase())
-
-    followups.forEach(async fu => {
-      const { followup } = await fu;
-      if (followup.prescriptionHash && (followup.prescriptionHash.toLowerCase() === this.props.prescriptionHash.toLowerCase())) {
-        this.setState(prevState => {
-          if (prevState.quantityBrought < followup.followup) {
-            return ({ quantityBrought: followup.followup });
-          }
-        })
-      }
-    })
-  }
-
-  componentDidMount() {
-    try {
-      const treatmentDays = moment(this.props.drug.endDate).diff(moment(this.props.drug.startDate), 'days');
-      const totalUnits = Number(this.props.drug.quantity) * Number(this.props.drug.recurrence) * Number(treatmentDays);
-      this.setState({totalUnits});
-    } catch (e) {
-    }
-    this.updateFollowup()
-  }
-
-  onChangeFollowup(e) {
-    this.setState({ followup: e.target.value });
-  }
-
-  async submitFollowup() {
-    const { contract, accounts, node } = this.props;
-    const followup = { followup: (Number(this.state.followup) + Number(this.state.quantityBrought)), prescriptionHash: this.props.prescriptionHash };
-    this.setState({ followup: 0 })
-    const followupHash = (await node.files.add(new Buffer(JSON.stringify(followup))))[0].hash;
-    await contract.writeFollowup(this.state.patient, followupHash, {from: accounts[0]});
-    setInterval(this.updateFollowup, 2000); // Ugly, I know ;(
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <div className="box">
-          Patient has already brought {this.state.quantityBrought} out of {this.state.totalUnits} units
-          <progress className="progress is-info" value={this.state.quantityBrought} max={this.state.totalUnits}/>
-        </div>
-        <div className="box">
-          <div className="field">
-            Patient brought
-            <input className="input is-inline-number" type="text" value={this.state.followup} onChange={this.onChangeFollowup}/>
-            units
-          </div>
-          <button className="button is-info" onClick={this.submitFollowup}>
-            Submit
-          </button>
-        </div>
-      </Fragment>
-    )
-  }
-}
-
-class PrescriptionInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { info: '' };
-  }
-
-  async componentDidMount() {
-    const info = (await this.props.req('/drugs/' + this.props.drug.drug.value + '/info/patient?type=pure-html')).data;
-    this.setState({ info });
-  }
-
-  render() {
-    return (
-      <div className="is-drug-info" dangerouslySetInnerHTML={{__html: this.state.info}}/>
-    )
-  }
-}
 
 export default Pharmacy;
