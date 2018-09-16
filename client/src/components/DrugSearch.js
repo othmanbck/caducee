@@ -44,6 +44,7 @@ class DrugSearch extends Component {
       <Select
         searchable={true}
         autoload={false}
+        placeholder={"Add Drug to Prescription"}
         value={this.state.value}
         onInputChange={this.handleChange}
         onChange={this.handleSelect}

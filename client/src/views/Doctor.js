@@ -12,6 +12,7 @@ class Doctor extends Component {
     this.setPatient = this.setPatient.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.onDrugSelect = this.onDrugSelect.bind(this);
+    this.clearPrescription = this.clearPrescription.bind(this);
     this.writePrescription = this.writePrescription.bind(this);
   }
 
@@ -31,57 +32,47 @@ class Doctor extends Component {
     });
   }
 
+  clearPrescription() {
+    this.setState({ items: [] });
+  }
+
   async writePrescription() {
     const { contract, accounts, node } = this.props;
     const prescriptionHash = (await node.files.add(new Buffer(JSON.stringify(this.state.items))))[0].hash;
-    await contract.writePrescription(this.state.patient, prescriptionHash, {from: accounts[0]});
+    await contract.writePrescription(accounts[0], this.state.patient, prescriptionHash, {from: accounts[0]});
     this.setState({ items: [] });
   }
 
   render() {
     return (
       <Fragment>
-        <form>
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label" htmlFor="eth_addr">
-                <h3 className="title is-5">Patient address</h3>
-              </label>
-            </div>
-            <div className="field-body">
-              <div className="field">
-                <div className="control">
-                  <input
-                    id="eth_addr"
-                    type="text"
-                    className="input"
-                    onChange={this.setPatient}
-                    value={this.state.patient}
-                  />
-                </div>
-              </div>
-            </div>
+        <div className="title has-text-success is-4">New Prescription</div>
+
+          <div className="box">
+
+                <input
+                  className="input"
+                  value={this.state.patient}
+                  onChange={this.setPatient}
+                  placeholder="Patient address"
+                />
+
           </div>
 
-          <div className="field is-horizontal">
-            <div className="field-label is-normal">
-              <label className="label" htmlFor="eth_addr">
-                <h3 className="title is-5">Add drug to prescription</h3>
-              </label>
-            </div>
-            <div className="field-body">
-              <div className="field">
-                <div className="control">
-                  <DrugSearch req={this.props.req} onDrugSelect={ this.onDrugSelect } />
-                </div>
-              </div>
-            </div>
+          <div className="box">
+            <DrugSearch req={this.props.req} onDrugSelect={ this.onDrugSelect } />
           </div>
-        </form>
+
         <br />
-        <h3 className="title is-5">Current prescription :</h3>
+        <div className="title has-text-success is-4">Pending Prescriptions</div>
         <DoctorPrescription handleChange={this.handleChange} items={this.state.items} />
-        <button className="button is-info is-large" onClick={this.writePrescription}>Write Prescription</button>
+
+        <br />
+        <div className="columns">
+          <div className="column is-2 is-offset-1"><button className="button is-primary is-medium is-fullwidth" onClick={this.clearPrescription}>Clear</button></div>
+          <div className="column is-3 is-offset-5"><button className="button is-primary is-medium is-fullwidth" onClick={this.writePrescription}>Write Prescription</button></div>
+        </div>
+
       </Fragment>
     )
   }
@@ -93,76 +84,77 @@ class DoctorPrescription extends Component {
       <Fragment>
         <div className="box is-prescription columns is-multiline">
           {this.props.items.map((item, i) => (
-            <div className="column is-half is-4" key={item.drug.value}>
-              <div className="box">
-                <h3 className="title is-6">{item.drug.label}</h3>
+
+            <div className="column is-one-third">
+            <article className="message is-warning">
+              <div className="message-header">
+                <p className="message-title">{item.drug.label}</p>
+              </div>
+              <div className="message-body">
                 <form>
+                  <label className="label">
+                    Frequency:
+                  </label>
+                  <div className="field">
+                    Patient should take
+                      <input
+                        id="recurrence"
+                        className="input is-inline-number"
+                        type="text"
+                        value={item.recurrence}
+                        onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
+                      />
+                    dose every day.
+                  </div>
+                  <br />
                   <div className="field">
                     Patient should take
                       <input
                         id="quantity"
                         type="text"
                         className="input is-inline-number"
-                        onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
                         value={item.quantity}
+                        onChange={(e) => this.props.handleChange(i, "quantity", e.target.value)}
                       />
-                    each dose
+                    each dose.
                   </div>
                   <br />
                   <div className="field">
-                    Patient takes a dose
+                    <label className="label">
+                      Posology:
+                    </label>
+                    <div className="control">
+                      <textarea
+                        id="posology"
+                        className="textarea"
+                        value={item.posology}
+                        onChange={(e) => this.props.handleChange(i, "posology", e.target.value)}
+                      ></textarea>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="field">
+                    <label className="label">
+                      End date:
+                    </label>
+                    <div className="control">
                       <input
-                        id="recurrence"
-                        className="input is-inline-number"
-                        type="text"
-                        onChange={(e) => this.props.handleChange(i, "recurrence", e.target.value)}
-                        value={item.recurrence}
+                        type="date"
+                        className="input"
+                        value={item.endDate}
+                        onChange={(e) => this.props.handleChange(i, "endDate", e.target.value)}
                       />
-                    times a day
-                  </div>
-                  <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="posology">
-                        Posology:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <textarea
-                            id="posology"
-                            className="textarea"
-                            onChange={(e) => this.props.handleChange(i, "posology", e.target.value)}
-                            value={item.posology}
-                          ></textarea>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br />
-                  <div className="field is-horizontal">
-                    <div className="field-label is-normal">
-                      <label className="label" htmlFor="end-date">
-                        End date:
-                      </label>
-                    </div>
-                    <div className="field-body">
-                      <div className="field">
-                        <div className="control">
-                          <input
-                            type="date"
-                            id="end-date"
-                            className="input"
-                            onChange={(e) => this.props.handleChange(i, "endDate", e.target.value)}
-                          />
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </form>
               </div>
-            </div>
+            </article>
+          </div>
+
+
+
+
+
           ))}
         </div>
       </Fragment>

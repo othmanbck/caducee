@@ -4,6 +4,7 @@ contract Caducee {
 
   // A Doctor writes a prescription for his patient
   event WritePrescription(
+    address indexed doctor,
     address indexed patient,
     string prescriptionHash
   );
@@ -45,8 +46,8 @@ contract Caducee {
     pharmacies[pharmacy] = false;
   }
 
-  function writePrescription(address patient, string prescriptionHash) public isDoctor() {
-    emit WritePrescription(patient, prescriptionHash);
+  function writePrescription(address doctor, address patient, string prescriptionHash) public isDoctor() {
+    emit WritePrescription(doctor, patient, prescriptionHash);
   }
 
   function writeFollowup(address patient, string followupHash) public isPharmacy() {

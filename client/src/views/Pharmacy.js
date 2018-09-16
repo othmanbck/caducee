@@ -17,6 +17,7 @@ class Pharmacy extends Component {
     const prescriptionEvents = await contract.getPastEvents('WritePrescription', { fromBlock: 0 })
     const prescriptions = prescriptionEvents.map(async prescription => ({
       id: prescription.id,
+      doctor:prescription.returnValues.doctor,
       patient: prescription.returnValues.patient,
       prescriptionHash: prescription.returnValues.prescriptionHash,
       // prescription is the array of drugs :)
@@ -99,7 +100,7 @@ class PharmacyPrescription extends Component {
       <div className="box">
         <div className="message is-primary is-standalone">
           <div className="message-header">
-            <h3 className="title is-5">From Doctor {this.state.doctor}</h3>
+            <h3 className="title is-5">From Doctor {prescription.doctor}</h3>
           </div>
         </div>
 
@@ -114,28 +115,31 @@ class PharmacyPrescription extends Component {
               </div>
               <div className="message-body">
                 <form>
+                  <label className="label">
+                    Frequency:
+                  </label>
+                  <div className="field">
+                    Patient should take
+                      <input
+                        id="recurrence"
+                        className="input is-inline-number is-warning"
+                        type="text"
+                        value={drug.recurrence}
+                        disabled
+                      />
+                    dose every day.
+                  </div>
+                  <br />
                   <div className="field">
                     Patient should take
                       <input
                         id="quantity"
                         type="text"
-                        className="input is-inline-number"
+                        className="input is-inline-number is-warning"
                         value={drug.quantity}
                         disabled
                       />
-                    each dose
-                  </div>
-                  <br />
-                  <div className="field">
-                    Patient takes a dose
-                      <input
-                        id="recurrence"
-                        className="input is-inline-number"
-                        type="text"
-                        value={drug.recurrence}
-                        disabled
-                      />
-                    times a day
+                    each dose.
                   </div>
                   <br />
                   <div className="field">
@@ -286,7 +290,7 @@ class PrescriptionStatus extends Component {
             <input className="input is-inline-number" type="text" value={this.state.followup} onChange={this.onChangeFollowup}/>
             units
           </div>
-          <button className="button is-info" onClick={this.submitFollowup}>
+          <button className="button is-primary" onClick={this.submitFollowup}>
             Submit
           </button>
         </div>
