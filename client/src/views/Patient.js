@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import PrescriptionInfo from '../components/PrescriptionInfo';
+import PrescriptionStatus from '../components/PrescriptionStatus';
 
 class Patient extends Component {
   constructor(props) {
@@ -9,7 +11,6 @@ class Patient extends Component {
   async componentDidMount() {
     const { contract, accounts } = this.props;
     const prescriptionEvents = await contract.getPastEvents('WritePrescription', { fromBlock: 0, filter: { patient: accounts[0] } })
-    console.log(prescriptionEvents);
     const prescriptions = prescriptionEvents.map(async prescription => ({
       id: prescription.id,
       patient: prescription.returnValues.patient,
@@ -23,14 +24,12 @@ class Patient extends Component {
   async getDrugsInfo() {
     const drugList = this.state.prescriptions.map(prescription => prescription.prescription).flat().map(prescription => prescription.drug.value);
     const drugInfo = await Promise.all(drugList.map(async id => {
-      var info;
       var drug;
       try {
-        info = (await this.props.req('/drugs/' + id + '/info/patient?type=pure-html')).data;
         drug = (await this.props.req('/drugs/' + id)).data;
       } catch (e) {
       }
-      return { info: info, ...drug }
+      return drug
     }));
     const drugs = {};
     drugInfo.forEach(drug => {if(drug.title) drugs[drug.swissmedicIds[0]] = drug});
@@ -56,16 +55,65 @@ class Patient extends Component {
               </div>
             </div>
             <div className="columns is-multiline">
-              {prescription.prescription.map(prescription => (
-                <Fragment key={JSON.stringify(prescription)}>
+              {prescription.prescription.map(drug => (
+                <Fragment key={JSON.stringify(drug)}>
                   <div className="column is-one-third">
-                    <h2 className="title is-4">{prescription.drug.label}</h2>
-                    <br/>
-                    <p className="subtitle is-6">Quantity: {prescription.quantity}</p>
-                    <p className="subtitle is-6">Recurrence: {prescription.recurrence}</p>
-                    <p className="subtitle is-6">Posology: {prescription.posology}</p>
+                    <article className="message is-warning">
+                      <div className="message-header">
+                        <div className="message-title">{drug.drug.label}</div>
+                      </div>
+                      <div className="message-body">
+                        <p>You should take <strong>{drug.quantity}</strong> doses, <strong>{drug.recurrence}</strong> time(s) every day</p>
+                        <br/>
+                        <label className="label">Doctor{"'"}s note</label>
+                        <div className="box">
+                          <p>{drug.posology}</p>
+                        </div>
+                        <br/>
+                        <label className="label">Take until</label>
+                        <p><strong>{drug.endDate}</strong></p>
+                        <br/>
+                        <button className="button is-warning is-large">Contact Doctor</button>
+                      </div>
+                    </article>
                   </div>
-                  <div className="column is-two-thirds"><div className="box"><div className="is-drug-info" dangerouslySetInnerHTML={{__html: (this.state.drugs[prescription.drug.value] || {info: null}).info}}/></div></div>
+                  <div className="column is-one-thirds">
+                    <div className="message is-success">
+                      <div className="message-header">
+                        <p className="message-title">Prescription Status</p>
+                      </div>
+                      <div className="message-body">
+                        <PrescriptionStatus
+                          node={this.props.node}
+                          accounts={this.props.accounts}
+                          contract={this.props.contract}
+                          drug={drug}
+                          prescriptionHash={prescription.prescriptionHash}
+                          isPatient
+                        />
+                        <br/>
+                        <div className="has-text-centered">
+                          <label className="label">Pickup today ?</label>
+                          <button className="button is-success">Map</button>
+                          <br/>
+                          <br/>
+                          <label className="label">Delegate Proxy</label>
+                          <button className="button is-success">New</button>
+                          <br/>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="column is-one-thirds">
+                    <div className="message is-dark">
+                      <div className="message-header">
+                        <p className="message-title">Prescription Details</p>
+                      </div>
+                      <div className="message-body">
+                        <PrescriptionInfo isPatient req={this.props.req} drug={drug}/>
+                      </div>
+                    </div>
+                  </div>
                   <div className="column is-11"><br/></div>
                   <div className="column is-11"><br/></div>
                 </Fragment>
